@@ -1,5 +1,7 @@
 # Original source code modified to add prediction batching support by Invitae in 2021.
 # Modifications copyright (c) 2021 Invitae Corporation.
+# 2023 Refactored to support newer Tensorflow libraries - (c) Mayo Clinic 
+# please add Hugues Sicotte to the list of attributions
 
 import collections
 
@@ -7,7 +9,9 @@ from pkg_resources import resource_filename
 import pandas as pd
 import numpy as np
 from pyfaidx import Fasta
-from keras.models import load_model
+#from keras.models import load_model
+from tensorflow.keras.models import load_model as load_model
+
 import logging
 
 
@@ -48,7 +52,7 @@ class Annotator:
             exit()
 
         paths = ('models/spliceai{}.h5'.format(x) for x in range(1, 6))
-        self.models = [load_model(resource_filename(__name__, x)) for x in paths]
+        self.models = [load_model(resource_filename(__name__, x),compile=False) for x in paths]
 
     def get_name_and_strand(self, chrom, pos):
 
