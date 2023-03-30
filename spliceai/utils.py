@@ -13,7 +13,7 @@ from pyfaidx import Fasta
 from tensorflow.keras.models import load_model as load_model
 
 import logging
-
+import sys
 
 GeneInfo = collections.namedtuple('GeneInfo', 'genes strands idxs')
 
@@ -22,6 +22,7 @@ class Annotator:
 
     def __init__(self, ref_fasta, annotations):
 
+        sys.stderr.write("Running spliceai with batching\n")
         if annotations == 'grch37':
             annotations = resource_filename(__name__, 'annotations/grch37.txt')
         elif annotations == 'grch38':
